@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title,
       description,
-      url: 'https://github.com/n-shyshko/08-zustand.git',
+      url: 'https://github.com/n-shyshko/08-zustand',
       images: [
         {
           url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',

@@ -3,11 +3,11 @@ import css from './not-found.module.css';
 export const metadata: Metadata = {
   title: 'Page not found | Note Hub',
   description: 'The page you are looking for does not exist',
-  metadataBase: new URL('https://github.com/n-shyshko/08-zustand.git'),
+  metadataBase: new URL('https://github.com/n-shyshko/08-zustand'),
   openGraph: {
     title: 'Page not found | Note Hub',
     description: 'The page you are looking for does not exist',
-    url: 'https://github.com/n-shyshko/08-zustand.git',
+    url: 'https://github.com/n-shyshko/08-zustand',
     images: [
       {
         url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
