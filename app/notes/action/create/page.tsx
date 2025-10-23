@@ -9,7 +9,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: 'Note Hub | Create Note',
       description: 'This page allows you to create a note',
-      url: 'https://github.com/n-shyshko/08-zustand',
+      url: 'https://08-zustand-green-rho.vercel.app/notes/action/create',
       images: [
         {
           url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',
