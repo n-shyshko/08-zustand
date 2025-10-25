@@ -1,19 +1,22 @@
 import { create } from "zustand";
+import { CreateNotePost } from "@/lib/api";
 import { persist } from "zustand/middleware";
-import { NoteFormValues } from "@/types/note";
-type NoteDraftStore = {
-  draft: NoteFormValues;
-  setDraft: (note: NoteFormValues) => void;
+import { NoteTag } from "@/types/note";
+
+type NoteDraft = {
+    draft: CreateNotePost;
+  setDraft: (note: CreateNotePost) => void;
   clearDraft: () => void;
-};
-const initialDraft: NoteFormValues = {
-  title: "",
-  content: "",
-  tag: "Todo",
+}
+
+const initialDraft: CreateNotePost = {
+  title: '',
+  content: '',
+  tag: 'Todo' as NoteTag,
 };
 
-export const useNoteDraftStore = create<NoteDraftStore>()(
-  persist(
+export const useNoteDraft = create<NoteDraft>()(
+  persist<NoteDraft>(
     (set) => ({
       draft: initialDraft,
       setDraft: (note) => set(() => ({ draft: note })),
@@ -21,7 +24,6 @@ export const useNoteDraftStore = create<NoteDraftStore>()(
     }),
     {
       name: "note-draft",
-      partialize: (state) => ({ draft: state.draft }),
     }
   )
 );

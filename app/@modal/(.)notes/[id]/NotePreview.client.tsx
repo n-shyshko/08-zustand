@@ -1,38 +1,79 @@
-'use client'
+"use client";
 
+import css from "./NotePreview.module.css";
+import Modal from "@/components/Modal/Modal";
+import { useParams } from "next/navigation";
 import { fetchNoteById } from "@/lib/api";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import css from "./NotePreview.module.css"
 import { useRouter } from "next/navigation";
 
-const NotePreviewClient = () => {
-const { id } = useParams<{ id: string}>()
+const NotePreview = () => {
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
 
-const router = useRouter()
-
-const {data: note, isLoading, error} = useQuery({
+  const {data: note, isLoading, error} = useQuery({
     queryKey: ["note", id],
-    queryFn: () => fetchNoteById({id}),
-    refetchOnMount: false
-})
-if(isLoading) return <p style={{textAlign: "center"}}>Loading, please wait...</p>
+    queryFn: () => fetchNoteById(id),
+    refetchOnMount: false,
+    retry: false,
+  });
 
-if(error || !note) return <p style={{textAlign: 'center'}}>Something went wrong.</p>
-const close = () => router.back()
-return <div className={css.backdrop}>
-<div className={css.container}> 
-           <button className={css.backBtn} onClick={close}>X</button>
+  const handleClose = () => router.back();
 
-	<div className={css.item}>
-	  <div className={css.header}>
-	    <h2>{note.title}</h2>
-	  </div>
-	  <p className={css.content}>{note.content}</p>
-	  <p className={css.date}>{note.createdAt}</p>
-	</div>
-</div></div>
+  if (isLoading) {
+    return (
+      <Modal onClose={handleClose}>
+        <p className={css.loading}>Loading, please wait...</p>
+      </Modal>
+    );
+  }
 
-}
+  if (error) {
+    return (
+      <Modal onClose={handleClose}>
+        <div className={css.errorContainer}>
+          <h2>Error loading note</h2>
+          <p>Failed to load note with ID: **{id}**.</p>
+          <p>Details: {error instanceof Error ? error.message : "Unknown error"}</p>
+          <button onClick={handleClose} className={css.backBtn}>
+            Close
+          </button>
+        </div>
+      </Modal>
+    );
+  }
+  
+  if (!note) {
+    return (
+      <Modal onClose={handleClose}>
+        <div className={css.errorContainer}>
+          <h2>Note not found</h2>
+          <p>Note with ID:: **{id}** is missing or has been deleted.</p>
+          <button onClick={handleClose} className={css.backBtn}>
+            Close
+          </button>
+        </div>
+      </Modal>
+    );
+  }
 
-export default NotePreviewClient;
+  return (
+    <Modal onClose={handleClose}>
+      <div className={css.container}>
+        <div className={css.item}>
+          <div className={css.header}>
+            <h2>{note.title}</h2>
+            <button onClick={handleClose} className={css.backBtn}>
+              Back
+            </button>
+          </div>
+          <p className={css.tag}>{note.tag}</p>
+          <p className={css.content}>{note.content}</p>
+          <p className={css.date}>{note.createdAt}</p>
+        </div>
+      </div>
+    </Modal>
+  );
+};
+
+export default NotePreview;
